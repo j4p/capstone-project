@@ -1,0 +1,14 @@
+library(shiny)
+library(plotly)
+
+ui <- div(
+	class = "wrapper", 
+	div(
+		class="main-panel", 
+		div(
+			class = "navbar justify-content-center"
+			), 
+		div(class = "content")
+		)
+	)
+

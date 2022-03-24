@@ -1,0 +1,70 @@
+library(ggplot2)
+
+# Grammar of Graphics (Intro)
+# 1. Data
+head(diamonds)
+# 2. Aesthetics
+ggplot(data = diamonds, mapping = aes(x = carat, y = price, color = color))
+# 3. Geometries
+ggplot(data = diamonds, mapping = aes(x = carat, y = price, color = color)) + 
+  geom_point() +
+  ggtitle("A point geom with position and color aesthetics")
+# 4. Themes
+ggplot(data = diamonds, mapping = aes(x = carat, y = price, color = color)) + 
+  geom_point() +
+  ggtitle("A point geom with position and color aesthetics") +
+  theme(plot.caption = element_text(size = 8))
+# 5. Statistics
+ggplot(data = diamonds, mapping = aes(x = carat, y = price, color = color)) + 
+  geom_point() +
+  ggtitle("A point geom with position and color aesthetics") +
+  theme(plot.caption = element_text(size = 8)) +
+  geom_line(
+    mapping = aes(x = carat, y = price),
+    data = diamonds,
+    stat = "smooth",
+    method = "lm"
+  )
+# 6. Coordinates
+ggplot(data = diamonds, mapping = aes(x = carat, y = price, color = color)) + 
+  geom_point() +
+  ggtitle("A point geom with position and color aesthetics") +
+  theme(plot.caption = element_text(size = 8)) +
+  geom_line(
+    mapping = aes(x = carat, y = price),
+    data = diamonds,
+    stat = "smooth",
+    method = "lm"
+  ) +
+  coord_polar()
+# 7. Facets
+ggplot(data = diamonds, mapping = aes(x = carat, y = price, color = color)) + 
+  geom_point() +
+  ggtitle("A point geom with position and color aesthetics") +
+  theme(plot.caption = element_text(size = 8)) +
+  geom_line(
+    mapping = aes(x = carat, y = price),
+    data = diamonds,
+    stat = "smooth",
+    method = "lm"
+  ) +
+  coord_polar() +
+  facet_wrap(facets = vars(clarity))
+
+
+
+
+# nyc.df <- read.csv("./day2/nyc_census_tracts.csv")
+# 
+# ggplot(nyc.df, aes(x=TotalPop)) + 
+#   geom_histogram(colour='black', fill='blue4', bins=50, size=0.2) + 
+#   theme_bw() +
+#   geom_vline(mapping = NULL, data = NULL, xintercept=median(nyc.df$TotalPop), colour='red',
+#              show.legend = NA) + 
+#   labs(title='New York City Census Tract Population Distribution',
+#        y='Number of Census Tracts',
+#        x='Census Tract Population',
+#        caption='Source: ACS 5-Year Estimates, 2015') +
+#   theme(plot.caption = element_text(size = 8)) +
+#   scale_x_continuous(breaks=c(0, 3622, 10000, 20000, 30000),
+#                      labels=c('0', '3622\nNYC Median', '10000', '20000', '30000'))

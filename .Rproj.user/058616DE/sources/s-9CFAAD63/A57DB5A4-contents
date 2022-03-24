@@ -1,0 +1,176 @@
+# eda case study: world covid-19 cases
+# data source: 
+# 1. https://datahub.io/core/covid-19/r/time-series-19-covid-combined.csv
+# 2. https://datahub.io/core/covid-19/r/countries-aggregated.csv
+
+
+# load the library
+library(dplyr) 
+library(readr)
+library(tidyr)
+library(ggplot2)
+library(plotly)
+
+# get the data
+# fill ... with the relevant function
+tsc <- ...('https://datahub.io/core/covid-19/r/time-series-19-covid-combined.csv')
+ca <- ...('https://datahub.io/core/covid-19/r/countries-aggregated.csv')
+
+# inspecting the data
+# tsc
+...(tsc)  # check the first observation
+...(tsc)  # check the last observation
+str(tsc)
+dim(tsc)
+...(tsc) # check the column names
+names(tsc) <- make.names(names(tsc))  # fix the variable names. You can skip this step, but remember to wrap the unfix variable name with a pair of backticks ``
+
+# ca
+head(ca)
+str(ca)
+dim(ca)
+names(ca) # no issues with the variable names. 
+
+##### EXERCISE 1 #####
+# Dapatkan informasi tentang kasus covid di hari pertama yang ada di data, diurutkan dari confirmed cases tertinggi ke terendah per country.   
+# ?
+
+tsc_df <- tsc %>% 
+            ...(...) %>%  # filter first date & confirmed > 0
+            ...(...)  # sort by confirmed case - descending & country - ascending
+
+# alternatif lain untuk kolom 'Date'
+# repeat the previous step, but use Date == as.Date('2020-01-22')
+# ?
+tsc_df2 <- tsc %>% 
+            ...(...) %>% # filter by spesific date '2020-01-22' And confirmed > 0
+            ...(...) # sort by confirmed case - descending & country - ascending
+
+
+##### EXERCISE 2 #####
+# Dapatkan informasi tentang kasus covid di hari terakhir yang ada di data, diurutkan dari confirmed cases tertinggi ke rendah by country. 
+# ?
+tsc_dl <- tsc %>% 
+            ...(...) %>% # filter by last date in dataframe And confirmed > 0
+            ...(...)
+
+
+##### Exercise 3 ##### 
+# Summary Plot of Worldwide Cases - Confirmed, Deaths & Recovered (top 20 countries)
+# date = 2021-06-30
+# integrating dplyr & ggplot. 
+
+# get top 20 countries
+ca20 <- ca %>% 
+          ...(Date == as.Date('2021-07-01') & Confirmed > 0) %>% # filter data hari tertentu saja. 
+          ...(...) %>%  # pilih semua kolom kecuali kolom Date
+          ...(...) %>%  # urutkan total cases (Confirmed + Recovered + Deaths) in descending order
+          ... # ambil 20 negara dengan confirmed case tertinggi. 
+  
+# make a bar chart of confirmed cases
+ggplot(ca20, aes(...)) +
+  ...()
+
+# make a bar chart of recovered cases
+ggplot(ca20, aes(...)) +  
+  ...()
+
+# make a bar chart of deaths cases
+ggplot(ca20, aes(...)) +  
+  ...()
+  
+# reshape the table --> pivot_longer() from column 'Confirmed' to 'Deaths'
+ca20_long <- ca20 %>% 
+              pivot_longer(cols=c(...), names_to="cases", values_to="value") %>%   # pivot_longer()
+  
+# make a bar chart of value
+ca20_long %>% 
+      ggplot(aes(..., ...)) +
+      geom_...()  
+
+# colored it according to the type of the cases
+ca20_long %>% 
+  ggplot(aes(..., ..., ...)) +
+  geom_...()
+
+# make the bar side by side
+ca20_long %>% 
+  ggplot(aes(..., ..., fill=...)) +
+  geom_col(...)
+
+# reorder the bar by the value in decreasing order
+ca20_long %>% 
+  ggplot(aes(..., ..., fill=...)) +
+  geom_col(...)
+
+# add title for the plot and axes
+ca20_long %>% 
+  ggplot(aes(..., ..., fill=...)) +
+  geom_col(...) +
+  labs(....)
+
+# adjust the title text
+ca20_long %>% 
+  ggplot(aes(..., ..., fill=...)) +
+  geom_col(...) +
+  labs(....) +
+  theme(axis.text.x = element_text(angle = ..., hjust = 1),  # rotate x axis text
+        plot.title = element_text(hjust = ..., vjust = -1))    # center the title, hjust=0 (left), hjust=0.5 (center), hjust=1 (right)
+
+
+
+##### Exercise 4 #####
+# visualize the confirmed cases for all countries in a multiline chart. 
+# library(plotly)
+
+# make the line chart using ca data
+ggplot(ca, aes(x=Date, y=Confirmed, color=Country)) + 
+  ...()
+
+# too crowdy: turn off the legend
+ggplot(ca, aes(x=Date, y=Confirmed, color=Country)) + 
+  ...() +
+  ...(...)
+
+# format the date on x axis to show 3-month period
+ggplot(ca, aes(x=Date, y=Confirmed, color=Country)) + 
+  ...() +
+  ...(...) +
+  ...(... = '3 month', 
+               labels = scales::...("..."))  # add date format: https://r-lang.com/r-date-format/
+
+# add title and axis label
+ggplot(ca, aes(x=Date, y=Confirmed, color=Country)) + 
+  ...() +
+  ...(...) +
+  ...(... = '3 month', 
+               labels = scales::...("...")) +  # add date format: https://r-lang.com/r-date-format/
+  ...(..., # title
+       ..., # x
+       ...)  # y
+
+# make it interactive
+# store the plot into a variable
+# call it using ggplotly()
+...(ca_line)
+
+################################################################
+# pivot_longer & pivot_wider
+library(tidyr)
+
+df <- data.frame(
+  country = c('A', 'B', 'C', 'A', 'B', 'C'),
+  year = c(1999, 1999, 1999, 2000, 2000, 2000),
+  cases = c('0.7K', '37K', '212K', '2K', '80K', '213K')
+)
+
+wide_df <- df %>% pivot_wider(names_from = year, values_from = cases)
+
+wide_df %>% pivot_longer(c(`1999`,`2000`), names_to = "year", values_to = "cases")
+
+
+
+
+
+
+

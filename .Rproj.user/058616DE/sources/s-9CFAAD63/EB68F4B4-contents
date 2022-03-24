@@ -1,0 +1,28 @@
+library(tidyverse)
+
+time_series_19_covid_combined <- read_csv("day3/time-series-19-covid-combined.csv")
+
+head(time_series_19_covid_combined)
+str(time_series_19_covid_combined)
+
+# question 1: how is the cases on the first day of covid-19?
+first_day <- time_series_19_covid_combined %>% 
+              ... %>% 
+              ... %>% 
+              ...
+
+# question 2: how is the cases on the last day of covid-19?
+last_day <- time_series_19_covid_combined %>% 
+              ... %>% 
+              ... %>% 
+              ...
+
+# question 3: dengan data 'countries-aggregated.csv', carilah top 20 countries dengan kasus confirmed terbanyak pada tanggal 4 Mei 2020 (hari terakhir)
+
+countries_aggregated <- read_csv("day3/countries-aggregated.csv")
+
+top20 <- countries_aggregated %>% 
+          ... %>% 
+          ... %>% 
+          ... %>%
+          top_n(20)
